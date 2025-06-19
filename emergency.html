@@ -32,9 +32,10 @@
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-sky-700">심폐소생술(CPR) 퀴즈</h1>
             <p class="mt-2 text-slate-600"> 학습한 응급처치 내용을 확인해보세요.</p>
+            <div id="star-container" class="mt-4 text-3xl"></div> </header>
 
         <div id="quiz-container" class="space-y-6">
-            </div>
+        </div>
 
         <div id="quiz-navigation" class="mt-8 text-center flex justify-center items-center space-x-4">
             <button id="check-answer-btn" class="bg-sky-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-sky-700 transition-colors duration-300">정답 확인</button>
@@ -108,6 +109,7 @@
         const retryBtn = document.getElementById('retry-btn');
         const answerFeedback = document.getElementById('answer-feedback');
         const resultsContainer = document.getElementById('results-container');
+        const starContainer = document.getElementById('star-container');
 
         let currentQuestionIndex = 0;
         let score = 0;
@@ -180,6 +182,7 @@
                     score++;
                     selectedLabel.classList.add('correct-answer');
                     answerFeedback.innerHTML = '<span class="text-green-600">✅ 정답입니다!</span>';
+                    starContainer.innerHTML += '⭐'; // 정답일 때 별 추가
                 } else {
                     selectedLabel.classList.add('incorrect-answer');
                     answerFeedback.innerHTML = `<span class="text-red-600">❌ 오답입니다.</span>`;
@@ -218,6 +221,7 @@
         function showFinalResults() {
             quizContainer.innerHTML = ''; // 퀴즈 컨테이너 비우기
             answerFeedback.innerHTML = ''; // 피드백 메시지 비우기
+            starContainer.innerHTML = ''; // 최종 결과 표시 시 별 초기화
 
             const totalQuestions = quizData.length;
             const incorrectAnswers = totalQuestions - score;
@@ -226,7 +230,8 @@
             let resultMessage = `<span class="text-sky-700">총 ${totalQuestions} 문제 중:</span><br>`;
             resultMessage += `<span class="text-green-600">✅ 정답: ${score}개</span><br>`;
             resultMessage += `<span class="text-red-600">❌ 오답: ${incorrectAnswers}개</span><br>`;
-            resultMessage += `<span class="text-slate-700">점수: ${scorePercentage}%</span>`;
+            resultMessage += `<span class="text-slate-700">점수: ${scorePercentage}%</span><br><br>`;
+            resultMessage += `<span class="text-sky-700 text-3xl font-extrabold">다 풀었습니다. 성공! 🎉</span>`; // 추가된 메시지
             
             resultsContainer.innerHTML = resultMessage;
 
@@ -240,6 +245,7 @@
         function retryQuiz() {
             currentQuestionIndex = 0;
             score = 0;
+            starContainer.innerHTML = ''; // 퀴즈 다시 풀기 시 별 초기화
             loadQuestion();
         }
         
